@@ -1,0 +1,12 @@
+[Unit]
+Description=Snaps - image sensor (Pi camera)
+
+[Service]
+ExecStart=/usr/bin/python /home/pi/code/Snaps/snaps-pi.py
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+Type=notify
+KillSignal=SIGINT
+
+[Install]
+WantedBy=default.target

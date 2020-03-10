@@ -1,0 +1,13 @@
+apt:
+  - python-systemd
+pip:
+  - redis
+services:
+  snaps-pi:
+    pip:
+      - picamera
+  snaps-cam:
+    apt:
+      - fswebcam
+    setup-root:
+      - usermod -a -G video pi

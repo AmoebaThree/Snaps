@@ -2,11 +2,22 @@
 
 Image sensor
 
-## Prerequisites
+## Message spec
 
-- `sudo apt-get install python-systemd`
-- `pip install redis`
+format: \<channel> "message"
 
-### For snaps-pi
-- Enable raspberry pi camer in `sudo raspi-config`
-- `pip install picamera`
+**Inputs**
+
+* \<snaps-pi> <filename>
+  * Triggers the Pi camera to take a photo and store it as filename
+  * Location of image capture to be determined
+* \<snaps-cam> <filename>
+  * Triggers the webcam to take a photo and store it as filename
+  * Location of image capture to be determined
+
+**Outputs**
+
+* \<snaps-pi-capture> <filename>
+  * Advises that a photo has been stored from the Pi camera with the specified filename
+* \<snaps-cam-capture> <filename>
+  * Advises that a photo has been stored from the webcam with the specified filename

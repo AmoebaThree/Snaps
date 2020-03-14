@@ -1,12 +1,11 @@
 if __name__ == '__main__':
     import systemd.daemon
-    import picamera
     import redis
+    import os
 
     print('Startup')
 
-    camera = picamera.PiCamera()
-    root_dir = '~/snaps/pi/'
+    root_dir = '~/snaps/cam/'
     os.makedirs(root_dir, exist_ok=True)
 
     r = redis.Redis(host='192.168.0.1', port=6379, db=0)
@@ -19,8 +18,9 @@ if __name__ == '__main__':
     try:
         for message in p.listen():
             filename = message['data']
-            camera.capture(root_dir + filename + ".jpg")
-            p.publish('snaps.pi.capture', filename)
+            os.system(
+                'fswebcam --device v4l2:/dev/video0 --input 0 --no-banner --resolution 640x360 ' + root_dir + filename + '.jpg')
+            p.publish('snaps.cam.capture', filename)
     except:
         p.close()
         print('Goodbye')

@@ -7,7 +7,7 @@ if __name__ == '__main__':
     print('Startup')
 
     camera = picamera.PiCamera()
-    root_dir = '~/snaps/pi/'
+    root_dir = '/home/pi/snaps/pi/'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
 

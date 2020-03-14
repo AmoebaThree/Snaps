@@ -5,7 +5,7 @@ if __name__ == '__main__':
 
     print('Startup')
 
-    root_dir = '~/snaps/cam/'
+    root_dir = '/home/pi/snaps/cam/'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
 

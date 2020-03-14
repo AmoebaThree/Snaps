@@ -2,6 +2,7 @@ if __name__ == '__main__':
     import systemd.daemon
     import picamera
     import redis
+    import os
 
     print('Startup')
 

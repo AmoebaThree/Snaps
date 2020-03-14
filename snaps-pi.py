@@ -22,7 +22,7 @@ if __name__ == '__main__':
         for message in p.listen():
             filename = message['data']
             camera.capture(root_dir + filename + ".jpg")
-            p.publish('snaps.pi.capture', filename)
+            r.publish('snaps.pi.capture', filename)
     except:
         p.close()
         print('Goodbye')

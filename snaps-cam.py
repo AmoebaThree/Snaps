@@ -9,7 +9,8 @@ if __name__ == '__main__':
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
 
-    r = redis.Redis(host='192.168.0.1', port=6379, db=0)
+    r = redis.Redis(host='192.168.0.1', port=6379,
+                    db=0, decode_responses=True)
     p = r.pubsub(ignore_subscribe_messages=True)
     p.subscribe('snaps.cam')
 

@@ -15,8 +15,9 @@ def execute():
     p = r.pubsub(ignore_subscribe_messages=True)
     p.subscribe('snaps.cam')
 
-    print('Startup complete')
+    r.publish('services', 'smaps.cam.on')
     systemd.daemon.notify('READY=1')
+    print('Startup complete')
 
     try:
         for message in p.listen():
@@ -26,6 +27,7 @@ def execute():
             r.publish('snaps.cam.capture', filename)
     except:
         p.close()
+        r.publish('services', 'snaps.cam.off')
         print('Goodbye')
 
 

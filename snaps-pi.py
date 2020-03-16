@@ -18,8 +18,9 @@ def execute():
     p = r.pubsub(ignore_subscribe_messages=True)
     p.subscribe('snaps.pi')
 
-    print('Startup complete')
+    r.publish('services', 'snaps.pi.on')
     systemd.daemon.notify('READY=1')
+    print('Startup complete')
 
     try:
         for message in p.listen():
@@ -28,6 +29,7 @@ def execute():
             r.publish('snaps.pi.capture', filename)
     except:
         p.close()
+        r.publish('services', 'snaps.pi.off')
         print('Goodbye')
 
 

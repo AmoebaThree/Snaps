@@ -1,12 +1,14 @@
-if __name__ == '__main__':
-    import systemd.daemon
-    import picamera
-    import redis
-    import os
+import systemd.daemon
+import picamera
+import redis
+import os
 
+
+def execute():
     print('Startup')
 
     camera = picamera.PiCamera()
+
     root_dir = '/home/pi/snaps/pi/'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
@@ -27,3 +29,7 @@ if __name__ == '__main__':
     except:
         p.close()
         print('Goodbye')
+
+
+if __name__ == '__main__':
+    execute()

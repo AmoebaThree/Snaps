@@ -1,8 +1,9 @@
-if __name__ == '__main__':
-    import systemd.daemon
-    import redis
-    import os
+import systemd.daemon
+import redis
+import os
 
+
+def execute():
     print('Startup')
 
     root_dir = '/home/pi/snaps/cam/'
@@ -26,3 +27,7 @@ if __name__ == '__main__':
     except:
         p.close()
         print('Goodbye')
+
+
+if __name__ == '__main__':
+    execute()

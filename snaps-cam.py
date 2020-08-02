@@ -1,12 +1,26 @@
 import systemd.daemon
 import redis
 import os
+import http.server
+import socketserver
+import threading
+
+root_dir = '/home/pi/snaps/cam/'
+
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=root_dir, **kwargs)
+
+
+def serve():
+    with socketserver.TCPServer(("", 7999), Handler) as httpd:
+        httpd.serve_forever()
 
 
 def execute():
     print('Startup')
 
-    root_dir = '/home/pi/snaps/cam/'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
 
@@ -15,7 +29,10 @@ def execute():
     p = r.pubsub(ignore_subscribe_messages=True)
     p.subscribe('snaps.cam')
 
-    r.publish('services', 'smaps.cam.on')
+    t = threading.Thread(target=serve, daemon=True)
+    t.start()
+
+    r.publish('services', 'snaps.cam.on')
     systemd.daemon.notify('READY=1')
     print('Startup complete')
 

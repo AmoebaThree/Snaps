@@ -2,6 +2,21 @@ import systemd.daemon
 import picamera
 import redis
 import os
+import http.server
+import socketserver
+import threading
+
+root_dir = '/home/pi/snaps/pi/'
+
+
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=root_dir, **kwargs)
+
+
+def serve():
+    with socketserver.TCPServer(("", 7999), Handler) as httpd:
+        httpd.serve_forever()
 
 
 def execute():
@@ -9,7 +24,6 @@ def execute():
 
     camera = picamera.PiCamera()
 
-    root_dir = '/home/pi/snaps/pi/'
     if not os.path.exists(root_dir):
         os.makedirs(root_dir)
 
@@ -17,6 +31,9 @@ def execute():
                     db=0, decode_responses=True)
     p = r.pubsub(ignore_subscribe_messages=True)
     p.subscribe('snaps.pi')
+
+    t = threading.Thread(target=serve, daemon=True)
+    t.start()
 
     r.publish('services', 'snaps.pi.on')
     systemd.daemon.notify('READY=1')
